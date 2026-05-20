@@ -1037,13 +1037,38 @@
         const isIOS = /iPhone|iPad|iPod/i.test(ua);
 
         if (isAndroid) {
-          window.location.href = 'intent://home#Intent;scheme=mercadopago;package=com.mercadopago.wallet;S.browser_fallback_url=https%3A%2F%2Fwww.mercadopago.com.ar;end';
+          // Android: intent URL forces native app, fallback to Play Store if not installed
+          const intentUrl = 'intent://send#Intent;scheme=mercadopago;package=com.mercadopago.wallet;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.mercadopago.wallet;end';
+          window.location.href = intentUrl;
         } else if (isIOS) {
-          window.location.href = 'mercadopago://';
-          setTimeout(() => {
-            window.location.href = 'https://www.mercadopago.com.ar';
-          }, 1500);
+          // iOS: try custom URL scheme first, fallback to App Store if not installed
+          const appUrl = 'mercadopago://';
+          const appStoreUrl = 'https://apps.apple.com/ar/app/mercado-pago/id925436649';
+          
+          // Hidden iframe trick to try opening app without leaving page
+          const iframe = document.createElement('iframe');
+          iframe.style.display = 'none';
+          document.body.appendChild(iframe);
+          
+          // Set a timer - if app doesn't open within 2s, redirect to App Store
+          const iosTimer = setTimeout(() => {
+            document.body.removeChild(iframe);
+            window.location.href = appStoreUrl;
+          }, 2000);
+          
+          // Try to open the app
+          iframe.src = appUrl;
+          
+          // If user returns to browser (app opened), clear the timer
+          window.addEventListener('blur', () => {
+            clearTimeout(iosTimer);
+            setTimeout(() => {
+              if (document.body.contains(iframe)) document.body.removeChild(iframe);
+            }, 500);
+          }, { once: true });
+          
         } else {
+          // Desktop
           window.open('https://www.mercadopago.com.ar', '_blank');
         }
 
