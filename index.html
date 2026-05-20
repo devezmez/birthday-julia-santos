@@ -442,36 +442,119 @@
       vertical-align: middle;
     }
 
-    /* Toast notification */
-    .copy-toast {
+    /* MP Modal */
+    .mp-modal {
       position: fixed;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%) translateY(150%);
-      background: var(--dark);
-      color: #fff;
-      padding: 1rem 1.8rem;
-      border-radius: 50px;
-      font-family: 'Jost', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 500;
-      letter-spacing: 0.05em;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
-      z-index: 999;
-      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      inset: 0;
+      background: rgba(20, 14, 10, 0.65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+      padding: 1.5rem;
+    }
+    .mp-modal.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .mp-modal-box {
+      background: var(--cream);
+      border-radius: 20px;
+      padding: 2.5rem 2rem 1.5rem;
+      max-width: 380px;
+      width: 100%;
       text-align: center;
-      max-width: 85vw;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+      transform: scale(0.9) translateY(20px);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-    .copy-toast.show {
-      transform: translateX(-50%) translateY(0);
+    .mp-modal.show .mp-modal-box {
+      transform: scale(1) translateY(0);
     }
-    .copy-toast span {
-      font-size: 0.78rem;
-      opacity: 0.7;
+    .mp-check {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 1.2rem;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: bold;
+      animation: mp-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes mp-pop {
+      0% { transform: scale(0); }
+      100% { transform: scale(1); }
+    }
+    .mp-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 0.6rem;
+    }
+    .mp-text {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.92rem;
       font-weight: 300;
-      letter-spacing: 0.05em;
-      display: inline-block;
-      margin-top: 0.2rem;
+      color: var(--mid);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    .mp-text strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .mp-counter {
+      margin-bottom: 1.2rem;
+    }
+    .mp-ring {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      margin: 0 auto;
+    }
+    .mp-ring svg {
+      width: 100%;
+      height: 100%;
+    }
+    .mp-ring span {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+    @keyframes mp-ring {
+      from { stroke-dashoffset: 0; }
+      to   { stroke-dashoffset: 163.36; }
+    }
+    .mp-cancel {
+      background: none;
+      border: none;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      transition: color 0.2s;
+    }
+    .mp-cancel:hover {
+      color: var(--dark);
     }
     .alias-link:hover {
       color: var(--mid);
@@ -721,7 +804,26 @@
       <p class="info-block-title">Regalo</p>
       <p class="regalo-note">Tu presencia es lo más importante.<br>Pero si deseás hacerme un regalo,<br>éste es mi alias:</p>
       <a href="#" class="alias-link" onclick="copyAndOpenMP(event)" id="alias-link">juliaa.santos</a>
-      <div class="copy-toast" id="copy-toast">¡Alias copiado! ✓<br><span>Pegalo en Mercado Pago</span></div>
+      <div class="mp-modal" id="mp-modal">
+        <div class="mp-modal-box">
+          <div class="mp-check">✓</div>
+          <h3 class="mp-title">¡Alias copiado!</h3>
+          <p class="mp-text">Estás siendo dirigido a <strong>Mercado Pago</strong><br>con el alias copiado en tu portapapeles.</p>
+          <div class="mp-counter">
+            <div class="mp-ring">
+              <svg viewBox="0 0 60 60">
+                <circle cx="30" cy="30" r="26" fill="none" stroke="rgba(139,110,90,0.15)" stroke-width="3"/>
+                <circle cx="30" cy="30" r="26" fill="none" stroke="var(--accent)" stroke-width="3"
+                        stroke-dasharray="163.36" stroke-dashoffset="0"
+                        transform="rotate(-90 30 30)"
+                        style="animation: mp-ring 5s linear forwards;"/>
+              </svg>
+              <span id="mp-countdown">5</span>
+            </div>
+          </div>
+          <button class="mp-cancel" id="mp-cancel">Cancelar</button>
+        </div>
+      </div>
     </div>
   </div>
   <div class="divider"></div>
@@ -858,12 +960,18 @@
   }
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
 
-  // ── Copy alias + open Mercado Pago app ──
+  // ── Copy alias + open Mercado Pago app with 5s countdown ──
+  let mpRedirecting = false;
+  let mpTimer = null;
+  let mpInterval = null;
+
   function copyAndOpenMP(e) {
     e.preventDefault();
+    if (mpRedirecting) return;
+    mpRedirecting = true;
+
     const alias = 'juliaa.santos';
 
-    // Copy to clipboard (with fallback)
     const copyToClipboard = (text) => {
       if (navigator.clipboard && window.isSecureContext) {
         return navigator.clipboard.writeText(text);
@@ -881,32 +989,124 @@
     };
 
     copyToClipboard(alias).then(() => {
-      // Show toast
-      const toast = document.getElementById('copy-toast');
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 3500);
+      const modal      = document.getElementById('mp-modal');
+      const countEl    = document.getElementById('mp-countdown');
+      const cancelBtn  = document.getElementById('mp-cancel');
+      const ringCircle = modal.querySelector('circle[style]');
 
-      // Detect device and open Mercado Pago accordingly
-      const ua = navigator.userAgent;
-      const isAndroid = /Android/i.test(ua);
-      const isIOS = /iPhone|iPad|iPod/i.test(ua);
+      // Reset ring animation
+      if (ringCircle) {
+        ringCircle.style.animation = 'none';
+        void ringCircle.offsetWidth;
+        ringCircle.style.animation = 'mp-ring 5s linear forwards';
+      }
 
-      setTimeout(() => {
+      // Show modal
+      modal.classList.add('show');
+      document.body.style.overflow = 'hidden';
+
+      // Countdown 5 → 1
+      let seconds = 5;
+      countEl.textContent = seconds;
+      mpInterval = setInterval(() => {
+        seconds--;
+        if (seconds <= 0) {
+          countEl.textContent = '0';
+          clearInterval(mpInterval);
+        } else {
+          countEl.textContent = seconds;
+        }
+      }, 1000);
+
+      // Cancel handler
+      const cancel = () => {
+        clearTimeout(mpTimer);
+        clearInterval(mpInterval);
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+        mpRedirecting = false;
+        cancelBtn.removeEventListener('click', cancel);
+      };
+      cancelBtn.addEventListener('click', cancel);
+
+      // After 5 seconds → open Mercado Pago
+      mpTimer = setTimeout(() => {
+        clearInterval(mpInterval);
+        const ua = navigator.userAgent;
+        const isAndroid = /Android/i.test(ua);
+        const isIOS = /iPhone|iPad|iPod/i.test(ua);
+
         if (isAndroid) {
-          // Android intent to open MP app directly
           window.location.href = 'intent://home#Intent;scheme=mercadopago;package=com.mercadopago.wallet;S.browser_fallback_url=https%3A%2F%2Fwww.mercadopago.com.ar;end';
         } else if (isIOS) {
-          // iOS universal link / custom scheme
           window.location.href = 'mercadopago://';
           setTimeout(() => {
             window.location.href = 'https://www.mercadopago.com.ar';
           }, 1500);
         } else {
-          // Desktop: open Mercado Pago website in new tab
           window.open('https://www.mercadopago.com.ar', '_blank');
         }
-      }, 800);
+
+        setTimeout(() => {
+          modal.classList.remove('show');
+          document.body.style.overflow = '';
+          mpRedirecting = false;
+        }, 1500);
+      }, 5000);
     });
+  }
+
+  function openMpModal() {
+    const modal = document.getElementById('mp-modal');
+    const countdownEl = document.getElementById('mp-countdown');
+    const cancelBtn = document.getElementById('mp-cancel');
+
+    let secs = 5;
+    countdownEl.textContent = secs;
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+
+    mpCountdown = setInterval(() => {
+      secs--;
+      countdownEl.textContent = secs;
+      if (secs <= 0) {
+        clearInterval(mpCountdown);
+      }
+    }, 1000);
+
+    mpTimer = setTimeout(() => {
+      closeMpModal();
+      redirectToMP();
+    }, 5000);
+
+    cancelBtn.onclick = () => {
+      clearTimeout(mpTimer);
+      clearInterval(mpCountdown);
+      closeMpModal();
+    };
+  }
+
+  function closeMpModal() {
+    const modal = document.getElementById('mp-modal');
+    modal.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+
+  function redirectToMP() {
+    const ua = navigator.userAgent;
+    const isAndroid = /Android/i.test(ua);
+    const isIOS = /iPhone|iPad|iPod/i.test(ua);
+
+    if (isAndroid) {
+      window.location.href = 'intent://home#Intent;scheme=mercadopago;package=com.mercadopago.wallet;S.browser_fallback_url=https%3A%2F%2Fwww.mercadopago.com.ar;end';
+    } else if (isIOS) {
+      window.location.href = 'mercadopago://';
+      setTimeout(() => {
+        window.location.href = 'https://www.mercadopago.com.ar';
+      }, 1500);
+    } else {
+      window.open('https://www.mercadopago.com.ar', '_blank');
+    }
   }
 
   </script>
