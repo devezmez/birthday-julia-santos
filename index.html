@@ -423,15 +423,19 @@
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(1.6rem, 5vw, 2.2rem);
       font-weight: 700;
-      color: var(--accent);
+      color: #3D3530;
       text-decoration: none;
       letter-spacing: 0.05em;
-      border-bottom: 1px solid var(--gold);
-      padding-bottom: 2px;
-      transition: color 0.3s, transform 0.15s;
+      border-bottom: 1.5px solid #3D3530;
+      padding-bottom: 3px;
+      transition: color 0.3s, transform 0.15s, border-color 0.3s;
       cursor: pointer;
       display: inline-block;
       position: relative;
+    }
+    .alias-link:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
     }
     .alias-link:active {
       transform: scale(0.96);
