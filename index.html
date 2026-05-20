@@ -211,6 +211,109 @@
       transform: translateY(-2px);
     }
 
+    /* Calendar button */
+    .btn-calendar {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: var(--accent);
+      border: 1.5px solid var(--accent);
+      font-family: 'Jost', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 0.75rem 2rem;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s, transform 0.2s;
+      position: relative;
+      margin-top: 1rem;
+    }
+    .btn-calendar:hover {
+      background: var(--accent);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+    .btn-calendar svg {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+    }
+
+    /* Calendar dropdown */
+    .cal-dropdown-wrap {
+      position: relative;
+      display: inline-block;
+      margin-top: 1rem;
+    }
+    .cal-dropdown {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) translateY(8px);
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+      overflow: hidden;
+      min-width: 230px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      z-index: 100;
+    }
+    .cal-dropdown.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(0);
+    }
+    .cal-dropdown-title {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      padding: 0.9rem 1.2rem 0.5rem;
+      font-weight: 500;
+    }
+    .cal-option {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1.2rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 400;
+      color: var(--dark);
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.15s;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+    .cal-option:hover {
+      background: var(--cream);
+    }
+    .cal-option:last-child {
+      border-bottom: none;
+    }
+    .cal-option + .cal-option {
+      border-top: 1px solid rgba(0,0,0,0.05);
+    }
+    .cal-option-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1rem;
+    }
+
     /* ─── COUNTDOWN ─── */
     .countdown-section {
       position: relative;
@@ -753,6 +856,50 @@
   <p class="confirm-label">Confirmame tu asistencia</p>
   <a href="https://docs.google.com/forms/d/e/1FAIpQLSdjGXyOQ-l8lK_PKWu-pKg2i8LlsVPIDEhjJU2GKyR7SMiS7A/viewform?pli=1"
      target="_blank" class="btn-confirm">Confirmar Asistencia</a>
+
+  <div class="cal-dropdown-wrap">
+    <button class="btn-calendar" onclick="toggleCalDropdown(event)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+        <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+      Agendar este Evento
+    </button>
+
+    <div class="cal-dropdown" id="cal-dropdown">
+      <p class="cal-dropdown-title">Elegí tu calendario</p>
+
+      <!-- Google Calendar -->
+      <a class="cal-option" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=XV+A%C3%B1os+de+Julia+Santos&dates=20260709T210000-0300%2F20260710T060000-0300&details=Fiesta+de+15+a%C3%B1os+de+Julia+Santos+%F0%9F%8E%89&location=UP+Fest+Eventos+Temperley%2C+Av.+Alte.+Brown+3433%2C+Temperley&sf=true&output=xml" target="_blank" onclick="closeCalDropdown()">
+        <span class="cal-option-icon" style="background:#f0f4ff;">
+          <img src="https://calendar.google.com/googlecalendar/images/favicon_v2018_256.png" width="18" height="18" alt="Google" style="border-radius:3px;">
+        </span>
+        Google Calendar
+      </a>
+
+      <!-- Apple / iCal -->
+      <button class="cal-option" onclick="downloadICS()">
+        <span class="cal-option-icon" style="background:#f5f5f7;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+            <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/>
+          </svg>
+        </span>
+        Apple Calendar / iCal
+      </button>
+
+      <!-- Outlook -->
+      <a class="cal-option" href="https://outlook.live.com/calendar/0/deeplink/compose?subject=XV+A%C3%B1os+de+Julia+Santos&startdt=2026-07-09T21%3A00%3A00&enddt=2026-07-10T06%3A00%3A00&body=Fiesta+de+15+a%C3%B1os+de+Julia+Santos+%F0%9F%8E%89&location=UP+Fest+Eventos+Temperley%2C+Av.+Alte.+Brown+3433%2C+Temperley&path=%2Fcalendar%2Faction%2Fcompose&rru=addevent" target="_blank" onclick="closeCalDropdown()">
+        <span class="cal-option-icon" style="background:#eef4ff;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#0078d4">
+            <path d="M7 2H3a1 1 0 00-1 1v18a1 1 0 001 1h18a1 1 0 001-1V7l-5-5H7zm0 0v5h10M5 12h14M5 16h14M5 20h8"/>
+          </svg>
+        </span>
+        Outlook
+      </a>
+    </div>
+  </div>
 </section>
 
 <!-- ══════════ COUNTDOWN ══════════ -->
@@ -885,6 +1032,52 @@
 </div>
 
 <script>
+  // ── Calendar dropdown ──
+  function toggleCalDropdown(e) {
+    e.stopPropagation();
+    const dd = document.getElementById('cal-dropdown');
+    dd.classList.toggle('open');
+  }
+  function closeCalDropdown() {
+    document.getElementById('cal-dropdown').classList.remove('open');
+  }
+  document.addEventListener('click', (e) => {
+    const wrap = document.querySelector('.cal-dropdown-wrap');
+    if (wrap && !wrap.contains(e.target)) closeCalDropdown();
+  });
+
+  // ── Download ICS file (Apple Calendar / Outlook) ──
+  function downloadICS() {
+    closeCalDropdown();
+    const ics = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Julia Santos XV//ES',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      'DTSTART;TZID=America/Argentina/Buenos_Aires:20260709T210000',
+      'DTEND;TZID=America/Argentina/Buenos_Aires:20260710T060000',
+      'SUMMARY:XV Años de Julia Santos 🎉',
+      'DESCRIPTION:Fiesta de 15 años de Julia Santos. ¡Te esperamos!',
+      'LOCATION:UP Fest Eventos Temperley\, Av. Alte. Brown 3433\, Temperley',
+      'STATUS:CONFIRMED',
+      'TRANSP:OPAQUE',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
+
+    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = 'julia-santos-xv.ics';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
   // ── Parallax JS (for mobile where fixed bg doesn't work well) ──
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
