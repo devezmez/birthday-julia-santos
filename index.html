@@ -293,12 +293,15 @@
 
     /* wave bottom of countdown */
     .countdown-wave {
-      position: relative;
-      z-index: 2;
-      margin-top: -2px;
+      position: absolute;
+      bottom: -1px;
+      left: -1px;
+      right: -1px;
+      z-index: 3;
       line-height: 0;
+      font-size: 0;
     }
-    .countdown-wave svg { display: block; width: 100%; }
+    .countdown-wave svg { display: block; width: calc(100% + 2px); }
 
     /* ─── VENUE SECTION ─── */
     .venue-section {
@@ -776,8 +779,8 @@
     </div>
   </div>
   <div class="countdown-wave">
-    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-      <path d="M0,80 C360,0 1080,0 1440,80 L1440,80 L0,80 Z" fill="#FAF6F0"/>
+    <svg viewBox="0 0 1440 90" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,90 C360,0 1080,0 1440,90 L1440,90 L0,90 Z" fill="#FAF6F0"/>
     </svg>
   </div>
 </section>
