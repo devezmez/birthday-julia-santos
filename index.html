@@ -793,10 +793,42 @@
       background: var(--dark);
       color: rgba(255,255,255,0.4);
       text-align: center;
-      padding: 2rem 1rem;
+      padding: 2.5rem 1rem;
       font-family: 'Jost', sans-serif;
       font-size: 0.75rem;
       letter-spacing: 0.1em;
+    }
+    .footer-vylo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1.2rem;
+      text-decoration: none;
+      color: rgba(255,255,255,0.35);
+      font-family: 'Jost', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 1.2rem;
+      width: 100%;
+      justify-content: center;
+    }
+    .footer-vylo:hover {
+      color: rgba(255,255,255,0.65);
+    }
+    .footer-vylo-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      font-style: italic;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.5);
+      transition: color 0.3s;
+    }
+    .footer-vylo:hover .footer-vylo-logo {
+      color: rgba(255,255,255,0.85);
     }
 
     /* ─── ANIMATIONS ─── */
@@ -1043,6 +1075,9 @@
 <!-- ══════════ FOOTER ══════════ -->
 <footer>
   <p>© 2026 &nbsp;·&nbsp; Julia Santos &nbsp;·&nbsp; XV Años</p>
+  <a href="https://vyloestudio.vercel.app/" target="_blank" class="footer-vylo">
+    Invitación creada por &nbsp;<span class="footer-vylo-logo">Vylo</span>
+  </a>
 </footer>
 
 <!-- LIGHTBOX -->
